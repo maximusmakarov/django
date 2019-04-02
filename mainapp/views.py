@@ -1,17 +1,18 @@
-from django.shortcuts import render
 import datetime
-
-
-
+from mainapp.models import ProductCategory, Product
+from django.shortcuts import render
 
 '''для главной страницы'''
 
 
 def index(request):
+    title = 'главная'
+    products = Product.objects.all()[:4]
     context = {
-        'page_title': 'главная'
+        'page_title': title,
+        'products': products,
     }
-    return render(request, "mainapp/index.html", context)
+    return render(request, 'mainapp/index.html', context)
 
 
 '''для страницы c контактами'''
@@ -51,7 +52,7 @@ def contact(request):
 '''для страницы c продуктами'''
 
 
-def products(request):
+def products(request, pk=None):
     context = {
         'page_title': 'каталог'
     }

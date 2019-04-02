@@ -6,7 +6,7 @@
                 "{% if request.resolver_match.url_name == 'index' %}
                 active
                 {% endif %}">домой</a></li>
-		<li><a href="{% url 'products' %}" class=
+		<li><a href="{% url 'products:index' %}" class=
                 "{% if request.resolver_match.url_name == 'products' %}
                 active
                 {% endif %}">продукты</a></li>
