@@ -21,6 +21,7 @@
 			<a class="explore" href="#">показать все <img src="{% static 'img/arrow.png' %}" alt=""></a>
 			<div class="clearfix">
 			</div>
+
 			<div class="tab-content">
 				<div class="block">
 					<a href="#"><img src="{% static 'img/product-1.jpg' %}" alt="">
@@ -31,6 +32,7 @@
 						</div>
 					</a>
 				</div>
+
 				<div class="block">
 					<a href="#"><img src="{% static 'img/product-2.jpg' %}" alt="">
 						<div class="text">
@@ -42,18 +44,6 @@
 				</div>
 
 			</div>
+
 		</div>
-        {# Пробник  #}
-        {% for product in products %}
-          <div class="block">
-            <a href="#">
-              <img src="/media/{{ product.image }}" alt="{{ product.short_desc }}">
-              <div class="text">
-                <h3>{{ product.category.name }}</h3>
-                <h4>{{ product.name }}</h4>
-                <p>{{ product.description }}</p>
-              </div>
-            </a>
-          </div>
-        {% endfor %}
 {% endblock %}

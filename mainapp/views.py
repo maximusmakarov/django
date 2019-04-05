@@ -1,6 +1,7 @@
 import datetime
 from mainapp.models import ProductCategory, Product
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 
 '''для главной страницы'''
 
@@ -52,10 +53,14 @@ def contact(request):
 '''для страницы c продуктами'''
 
 
-def products(request, pk=None):
+def products(request):
     context = {
-        'page_title': 'каталог'
+        'page_title': 'каталог',
+        'products': products
     }
     return render(request, 'mainapp/products.html', context)
 
 
+def category(request, pk):
+    print(f'выбрали {pk}')
+    return HttpResponseRedirect(reverse('products:index'))
