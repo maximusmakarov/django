@@ -53,19 +53,19 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
-def edit(request):
+def update(request):
 
     if request.method == 'POST':
         form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('auth:edit'))
+            return HttpResponseRedirect(reverse('auth:update'))
     else:
-        edit_form = ShopUserEditForm(instance=request.user)
+        form = ShopUserEditForm(instance=request.user)
 
     context = {
         'title': 'редактирование',
         'form': form
     }
 
-    return render(request, 'authapp/edit.html', context)
+    return render(request, 'authapp/update.html', context)
