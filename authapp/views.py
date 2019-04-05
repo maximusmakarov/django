@@ -1,15 +1,14 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from authapp.forms import ShopUserLoginForm
 from django.contrib import auth
 from django.urls import reverse
+from authapp.forms import ShopUserLoginForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.forms import ShopUserEditForm
 # Create your views here.
 
 
 def login(request):
-    title = 'вход'
 
     form = ShopUserLoginForm(data=request.POST)
     if request.method == 'POST' and form.is_valid():
@@ -20,8 +19,10 @@ def login(request):
         if user and user.is_active:
             auth.login(request, user)
             return HttpResponseRedirect(reverse('index'))
+    else:
+        form = ShopUserLoginForm()
 
-    context ={
+    context = {
         'title': 'Вход в систему',
         'form': form
     }
@@ -34,33 +35,37 @@ def logout(request):
 
 
 def register(request):
-    title = 'Регистрация'
 
     if request.method == 'POST':
-        register_form = ShopUserRegisterForm(request.POST, request.FILES)
+        form = ShopUserRegisterForm(request.POST, request.FILES)
 
-        if register_form.is_valid():
-            register_form.save()
+        if form.is_valid():
+            form.save()
             return HttpResponseRedirect(reverse('auth:login'))
     else:
-        register_form = ShopUserRegisterForm()
+        form = ShopUserRegisterForm()
 
-    content = {'title': title, 'register_form': register_form}
+    context = {
+        'title': 'регистрация',
+        'form': form
+    }
 
-    return render(request, 'authapp/register.html', content)
+    return render(request, 'authapp/register.html', context)
 
 
 def edit(request):
-    title = 'Редактирование'
 
     if request.method == 'POST':
-        edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
-        if edit_form.is_valid():
-            edit_form.save()
+        form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
 
-    content = {'title': title, 'edit_form': edit_form}
+    context = {
+        'title': 'редактирование',
+        'form': form
+    }
 
-    return render(request, 'authapp/edit.html', content)
+    return render(request, 'authapp/edit.html', context)
