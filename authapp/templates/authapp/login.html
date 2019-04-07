@@ -4,7 +4,7 @@
 {% block container %}
     <form class="form-horizontal" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_table }}
         <br>
         <input class="form-control" type="submit" value="Войти">
     </form>

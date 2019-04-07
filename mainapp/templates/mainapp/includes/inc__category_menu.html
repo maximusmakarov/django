@@ -1,10 +1,14 @@
 <div class="links clearfix">
     <ul class="links-menu">
         {{ request.resolver_mutch.url.name }}
-        <li><a href="{% url 'products:category' 0 %}" class="active">все</a></li>
-        <li><a href="{% url 'products:category' 1 %}">дом</a></li>
-        <li><a href="{% url 'products:category' 2 %}">офис</a></li>
-        <li><a href="{% url 'products:category' 3 %}">модерн</a></li>
-        <li><a href="{% url 'products:category' 4 %}">классика</a></li>
+        <li><a href="{% url 'products:category' 0 %}">все</a></li>
+        {% for link in links_menu %}
+            <li>
+                <a href="{% url 'products:category' link.pk %}"
+                   class="{% if request.resolver_match.kwargs.pk|add:0 == link.pk %}active{% endif %}">
+                    {{ link.name }}
+                </a>
+            </li>
+        {% endfor %}
     </ul>
 </div>
