@@ -4,14 +4,8 @@ from basketapp.models import Basket
 from mainapp.models import Product
 
 
-def basket(request):
-    context = {}
-    return render(request, 'basketapp/basket.html', context)
-
-
-def basket_remove(request, pk):
-    context = {}
-    return render(request, 'basketapp/basket.html', context)
+def index(request):
+    pass
 
 
 def add(request, pk):
@@ -24,5 +18,13 @@ def add(request, pk):
 
     basket.quantity += 1
     basket.save()
+
+    # def basket(request):
+    #     context = {}
+    #     return render(request, 'basketapp/basket.html', context)
+    #
+    # def basket_remove(request, pk):
+    #     context = {}
+    #     return render(request, 'basketapp/basket.html', context)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
