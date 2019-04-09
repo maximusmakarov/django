@@ -3,24 +3,33 @@ from mainapp.models import ProductCategory, Product
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.urls import reverse
 from basketapp.models import Basket
+import random
 
 '''для главной страницы'''
 
 
-def get_basket(request):
-    if request.user.is_authenticated:
-        return request.user.basket.all()
+def get_basket(user):
+    if user.is_authenticated:
+        return Basket.objects.filter(user=user)
     else:
         return []
 
 
+def get_hot_product():
+    return random.choice(Product.objects.all())
+
+
+def get_same_products(hot_product):
+    return hot_product.category.product_set.exclude(pk=hot_product.pk)
+
+
 def index(request):
     title = 'главная'
-    products = Product.objects.all()[:4]
+    products_all = Product.objects.all()[:4]
     context = {
         'page_title': title,
-        'products': products,
-        'basket': get_basket(request)
+        'products': products_all,
+        'basket': get_basket(request.user)
     }
     return render(request, 'mainapp/index.html', context)
 
@@ -29,7 +38,7 @@ def index(request):
 
 
 def contact(request):
-    locations =[
+    locations = [
         {
             'city': 'Москва',
             'phone': '+7-888-888-8888',
@@ -55,7 +64,7 @@ def contact(request):
     context = {
         'page_title': 'контакты',
         'locations': locations,
-        'basket': get_basket(request)
+        'basket': get_basket(request.user)
     }
     return render(request, 'mainapp/contact.html', context)
 
@@ -65,13 +74,16 @@ def contact(request):
 
 def products(request):
     links_menu = ProductCategory.objects.all()
-    products = Product.objects.all()
+    hot_product = get_hot_product()
+    same_products = get_same_products(hot_product)
+    basket = get_basket(request.user)
 
     context = {
         'page_title': 'каталог',
-        'products': products,
+        'hot_product': hot_product,
+        'same_products': same_products,
         'links_menu': links_menu,
-        'basket': get_basket(request)
+        'basket': basket,
     }
     return render(request, 'mainapp/products.html', context)
 
@@ -92,7 +104,7 @@ def category(request, pk):
             'links_menu': links_menu,
             'category': category,
             'products': products,
-            'basket': get_basket(request)
+            'basket': get_basket(request.user)
         }
 
         return render(request, 'mainapp/products_list.html', context)
