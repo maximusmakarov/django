@@ -32,7 +32,7 @@
         </li>
     </ul>
     <a href="#" class="search"></a>
-    <a href="#" class="basket">
+    <a href="{% url 'basket:index' %}" class="basket">
     <span>
         {% if basket %}
             {{ basket.first.total_cost|floatformat:0 }} руб
