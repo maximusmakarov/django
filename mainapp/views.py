@@ -93,17 +93,17 @@ def category(request, pk):
 
     if pk is not None:
         if int(pk) == 0:
-            category = {'name': 'все'}
-            products = Product.objects.all().order_by('price')
+            products_by_category = {'name': 'все'}
+            products_all = Product.objects.all().order_by('price')
         else:
-            category = get_object_or_404(ProductCategory, pk=pk)
-            products = category.product_set.order_by('price')
+            products_by_category = get_object_or_404(ProductCategory, pk=pk)
+            products_all = products_by_category.product_set.order_by('price')
 
         context = {
             'title': 'продукты',
             'links_menu': links_menu,
-            'category': category,
-            'products': products,
+            'category': products_by_category,
+            'products': products_all,
             'basket': get_basket(request.user)
         }
 
