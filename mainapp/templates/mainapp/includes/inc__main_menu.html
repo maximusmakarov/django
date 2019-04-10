@@ -1,17 +1,17 @@
 <div class="header clearfix">
-    <a href="{% url 'index' %}" class="logo"></a>
+    <a href="{% url 'main:index' %}" class="logo"></a>
     <ul class="menu">
         {{ request.resolver_mutch.url.name }}
-        <li><a href="{% url 'index' %}" class=
-                "{% if request.resolver_match.view_name == 'index' %}
+        <li><a href="{% url 'main:index' %}" class=
+                "{% if request.resolver_match.url_name == 'index' %}
                 active
                 {% endif %}">домой</a></li>
-        <li><a href="{% url 'products:index' %}" class=
-                "{% if request.resolver_match.namespace == 'products' %}
+        <li><a href="{% url 'main:products' %}" class=
+                "{% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'category'%}
                 active
                 {% endif %}">продукты</a></li>
         <li><a href="{% url 'contact' %}" class=
-                "{% if request.resolver_match.view_name == 'contact' %}
+                "{% if request.resolver_match.url_name == 'contact' %}
                 active
                 {% endif %}">контакты</a></li>
 

@@ -13,7 +13,8 @@
         <div class="details-products">
             <div class="details-slider">
                 <div class="slider-product">
-                    <img src="/media/{{ hot_product.image }}" alt="">
+                    <img src="/media/{{ hot_product.image }}"
+                         alt="{{ product.short_desc }}">
                 </div>
                 <div class="slider-control">
                     <div class="block">
@@ -54,15 +55,15 @@
             </div>
             <div class="related-products clearfix">
                 {% for item in same_products %}
-                <div class="block">
-                    <a href="#"><img src="/media/{{ item.image }}" alt="">
-                        <div class="text">
-                            <img src="{% static 'img/icon-hover.png' %}" alt="img">
-                            <h4>{{ item.name }}</h4>
-                            <p>{{ item.short_desc }} </p>
-                        </div>
-                    </a>
-                </div>
+                    <div class="block">
+                        <a href="#"><img src="/media/{{ item.image }}" alt="">
+                            <div class="text">
+                                <img src="{% static 'img/icon-hover.png' %}" alt="img">
+                                <h4>{{ item.name }}</h4>
+                                <p>{{ item.short_desc }} </p>
+                            </div>
+                        </a>
+                    </div>
                 {% endfor %}
 
             </div>
