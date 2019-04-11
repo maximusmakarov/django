@@ -10,7 +10,7 @@
                 "{% if request.resolver_match.url_name == 'products' or request.resolver_match.url_name == 'category'%}
                 active
                 {% endif %}">продукты</a></li>
-        <li><a href="{% url 'contact' %}" class=
+        <li><a href="{% url 'main:contact' %}" class=
                 "{% if request.resolver_match.url_name == 'contact' %}
                 active
                 {% endif %}">контакты</a></li>

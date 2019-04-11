@@ -1,6 +1,12 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
 
+{% block title %}
+    <title>
+        Магазин | {{ object.name|title}}
+    </title>
+{% endblock %}
+
 {% block container %}
     <div class="hero-white">
         {% include 'mainapp/includes/inc__main_menu.html' %}

@@ -6,6 +6,7 @@ from basketapp.models import Basket
 import random
 
 
+
 def get_basket(request):
     if request.user.is_authenticated:
         return request.user.basket.all()
