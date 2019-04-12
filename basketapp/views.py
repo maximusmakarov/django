@@ -68,4 +68,3 @@ def update(request, pk, quantity):
         return JsonResponse({
             'result': result
         })
-

@@ -22,10 +22,10 @@ import mainapp.views as mainapp
 
 urlpatterns = [
     re_path(r'^', include('mainapp.urls', namespace='main')),
-    # re_path(r'^admin/', include('adminapp.urls', namespace='admin')),
     re_path(r'^auth/', include('authapp.urls', namespace='auth')),
     re_path(r'^basket/', include('basketapp.urls', namespace='basket')),
     re_path(r'^admin/', admin.site.urls, name='admin'),
+    re_path(r'^myadmin/', include('adminapp.urls', namespace='myadmin')),
 ]
 
 if settings.DEBUG:
