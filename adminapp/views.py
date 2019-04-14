@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from authapp.models import ShopUser
-from mainapp.models import ProductCategory
+from mainapp.models import ProductCategory, Product
 
 
 def index(request):
@@ -25,3 +25,16 @@ def categories(request):
 
     return render(request, 'adminapp/productcategory_list.html', content)
 
+
+def products(request, pk):
+
+    category = get_object_or_404(ProductCategory, pk=pk)
+    object_list = category.product_set.all().order_by('name')
+
+    context = {
+        'title': 'админка/продукт',
+        'category': category,
+        'object_list': object_list,
+    }
+
+    return render(request, 'adminapp/product_list.html', context)

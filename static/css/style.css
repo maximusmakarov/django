@@ -118,8 +118,8 @@ html, body {
 }
 
 .product_record {
-    height: 125px;
-    margin: 15px auto;
+    height: 200px;
+    margin: 25px auto;
     position: relative;
 }
 
@@ -148,7 +148,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 15px;
-    margin-left: 25px;
+    margin-left: 50px;
     width: 350px;
 }
 
@@ -156,7 +156,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 15px;
-    margin-left: 25px;
+    margin-left: 50px;
     width: 100px;
 }
 

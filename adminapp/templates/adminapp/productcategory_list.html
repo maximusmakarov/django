@@ -3,7 +3,7 @@
 
 {% block container %}
     <div class="categories_list">
-        <a href="{#% url 'admin:category_create' %#}" class="btn btn-primary new_category">
+        <a href="{#% url 'myadmin:category_create' %#}" class="btn btn-primary new_category">
             новая категория
         </a>
         {% for object in object_list %}
@@ -12,18 +12,18 @@
                     {{ object.name|title }}
                 </div>
                 <div class="category_actions">
-                    <a href="{#% url 'admin:products' object.pk %#}" class="btn btn-info">
+                    <a href="{% url 'myadmin:products' object.pk %}" class="btn btn-info">
                         товары категории
                     </a>
-                    <a href="{#% url 'admin:category_update' object.pk %#}" class="btn btn-success">
+                    <a href="{#% url 'myadmin:category_update' object.pk %#}" class="btn btn-success">
                         редактировать
                     </a>
-                    <a href="{#% url 'admin:category_delete' object.pk %#}" class="btn btn-danger">
+                    <a href="{#% url 'myadmin:category_delete' object.pk %#}" class="btn btn-danger">
                         удалить
                     </a>
                 </div>
                 <div class="category_desc">
-                    {{ object.description|title }}
+                    {{ object.description }}
                 </div>
             </div>
         {% endfor %}
