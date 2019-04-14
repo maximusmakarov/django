@@ -5,4 +5,7 @@ app_name = 'adminapp'
 
 urlpatterns = [
     re_path(r'^$', adminapp.index, name='index'),
+    re_path(r'^categories/$', adminapp.categories, name='categories'),
+
+
 ]

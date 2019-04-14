@@ -21,10 +21,15 @@
     {% endblock %}
 </head>
 <body>
-<div class="basket-container">
+<div class="admin_container">
     <div class="h2 text-center head">
-        Ваша корзина, {{ user.first_name|title|default:'Пользователь'}}
+        Админка
     </div>
+    {% block menu %}
+        <div class="admin_menu">
+            {% include 'adminapp/includes/inc__menu.html' %}
+        </div>
+    {% endblock %}
 
     {% block container %}
     {% endblock %}
