@@ -12,14 +12,14 @@ window.onload = function () {
     //     event.preventDefault();
     // });
 
-    $('.basket-list').change( 'input[type="number"]',function (event) {
+    $('.basket_list').change( 'input[type="number"]',function (event) {
 
         let targetHref = event.target;
 
         $.ajax({
             url: "/basket/update/" + targetHref.name + "/" + targetHref.value + "/",
             success: function (data) {
-                $('.basket-list').html(data.result);
+                $('.basket_list').html(data.result);
             }
         });
 
