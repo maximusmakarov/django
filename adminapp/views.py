@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from adminapp.forms import ShopUserCreationAdminForm, ShopUserUpdateAdminForm
+from adminapp.forms import ShopUserCreationAdminForm, ShopUserUpdateAdminForm, ProductCategoryEditForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory
 
@@ -23,7 +23,7 @@ def index(request):
 @user_passes_test(lambda x: x.is_superuser)
 def categories(request):
 
-    object_list = ProductCategory.objects.all()
+    object_list = ProductCategory.objects.all().order_by('-is_active', 'name')
 
     content = {
         'title': 'админка/категории',
@@ -48,6 +48,7 @@ def products(request, pk):
     return render(request, 'adminapp/product_list.html', context)
 
 
+@user_passes_test(lambda x: x.is_superuser)
 def shopuser_create(request):
 
     if request.method == 'POST':
@@ -66,6 +67,7 @@ def shopuser_create(request):
     return render(request, 'adminapp/shopuser_update.html', context)
 
 
+@user_passes_test(lambda x: x.is_superuser)
 def shopuser_update(request, pk):
     current_user = get_object_or_404(ShopUser, pk=pk)
     if request.method == 'POST':
@@ -84,6 +86,7 @@ def shopuser_update(request, pk):
     return render(request, 'adminapp/shopuser_update.html', context)
 
 
+@user_passes_test(lambda x: x.is_superuser)
 def shopuser_delete(request, pk):
     object = get_object_or_404(ShopUser, pk=pk)
 
@@ -99,6 +102,24 @@ def shopuser_delete(request, pk):
 
     return render(request, 'adminapp/shopuser_delete.html', context)
 
+
+@user_passes_test(lambda x: x.is_superuser)
+def productcategory_update(request, pk):
+    current_object = get_object_or_404(ProductCategory, pk=pk)
+    if request.method == 'POST':
+        form = ProductCategoryEditForm(request.POST, request.FILES, instance=current_object)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('myadmin:categories'))
+    else:
+        form = ProductCategoryEditForm(instance=current_object)
+
+    context = {
+        'title': 'категории/редактирование',
+        'form': form
+    }
+
+    return render(request, 'adminapp/productcategory_update.html', context)
 
 
 
