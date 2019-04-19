@@ -4,7 +4,7 @@
 {% block container %}
     <div class="products_list">
 
-        <a href="{#% url 'myadmin:product_create' category.pk %#}" class="btn btn-primary new_product">
+        <a href="{% url 'myadmin:product_create' category.pk %}" class="btn btn-primary new_product">
             новый продукт
         </a>
 
@@ -17,15 +17,15 @@
                 </div>
                 <div class="product_actions">
 
-                    <a href="{#% url 'myadmin:product_read' object.pk %#}" class="btn btn-info">
+                    <a href="{% url 'myadmin:product_read' object.pk %}" class="btn btn-info">
                         подробнее
                     </a>
 
-                    <a href="{#% url 'myadmin:product_update' object.pk %#}" class="btn btn-success">
+                    <a href="{% url 'myadmin:product_update' object.pk %}" class="btn btn-success">
                         редактировать
                     </a>
 
-                    <a href="{#% url 'myadmin:product_delete' object.pk %#}" class="btn btn-danger">
+                    <a href="{% url 'myadmin:product_delete' object.pk %}" class="btn btn-danger">
                         удалить
                     </a>
 
