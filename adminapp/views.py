@@ -4,6 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.utils.decorators import method_decorator
+from django.views.generic.edit import CreateView, UpdateView
+from django.urls import reverse_lazy
 
 
 from adminapp.forms import ShopUserCreationAdminForm, ShopUserUpdateAdminForm, ProductCategoryEditForm, ProductEditForm
@@ -25,6 +27,10 @@ from mainapp.models import ProductCategory, Product
 
 class UsersListView(ListView):
     model = ShopUser
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 @user_passes_test(lambda x: x.is_superuser)
@@ -110,41 +116,58 @@ def shopuser_delete(request, pk):
     return render(request, 'adminapp/shopuser_delete.html', context)
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def productcategory_create(request):
-    if request.method == 'POST':
-        form = ProductCategoryEditForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('myadmin:categories'))
-    else:
-        form = ProductCategoryEditForm()
+# @user_passes_test(lambda x: x.is_superuser)
+# def productcategory_create(request):
+#     if request.method == 'POST':
+#         form = ProductCategoryEditForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('myadmin:categories'))
+#     else:
+#         form = ProductCategoryEditForm()
+#
+#     context = {
+#         'title': 'категории/создание',
+#         'form': form
+#     }
+#
+#     return render(request, 'adminapp/productcategory_update.html', context)
 
-    context = {
-        'title': 'категории/создание',
-        'form': form
-    }
 
-    return render(request, 'adminapp/productcategory_update.html', context)
+class ProductCategoryCreateView(CreateView):
+    model = ProductCategory
+    success_url = reverse_lazy('myadmin:categories')
+    form_class = ProductCategoryEditForm
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def productcategory_update(request, pk):
-    current_object = get_object_or_404(ProductCategory, pk=pk)
-    if request.method == 'POST':
-        form = ProductCategoryEditForm(request.POST, request.FILES, instance=current_object)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('myadmin:categories'))
-    else:
-        form = ProductCategoryEditForm(instance=current_object)
+# @user_passes_test(lambda x: x.is_superuser)
+# def productcategory_update(request, pk):
+#     current_object = get_object_or_404(ProductCategory, pk=pk)
+#     if request.method == 'POST':
+#         form = ProductCategoryEditForm(request.POST, request.FILES, instance=current_object)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('myadmin:categories'))
+#     else:
+#         form = ProductCategoryEditForm(instance=current_object)
+#
+#     context = {
+#         'title': 'категории/редактирование',
+#         'form': form
+#     }
+#
+#     return render(request, 'adminapp/productcategory_update.html', context)
 
-    context = {
-        'title': 'категории/редактирование',
-        'form': form
-    }
 
-    return render(request, 'adminapp/productcategory_update.html', context)
+class ProductCategoryUpdateView(UpdateView):
+    model = ProductCategory
+    success_url = reverse_lazy('myadmin:categories')
+    form_class = ProductCategoryEditForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'категории/редактирование'
+        return context
 
 
 @user_passes_test(lambda x: x.is_superuser)
