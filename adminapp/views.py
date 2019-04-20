@@ -1,12 +1,11 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-from django.views.generic.list import ListView
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic.edit import CreateView, UpdateView
-from django.urls import reverse_lazy
-
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.list import ListView
 
 from adminapp.forms import ShopUserCreationAdminForm, ShopUserUpdateAdminForm, ProductCategoryEditForm, ProductEditForm
 from authapp.models import ShopUser
@@ -170,21 +169,33 @@ class ProductCategoryUpdateView(UpdateView):
         return context
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def productcategory_delete(request, pk):
-    object = get_object_or_404(ProductCategory, pk=pk)
+# @user_passes_test(lambda x: x.is_superuser)
+# def productcategory_delete(request, pk):
+#     object = get_object_or_404(ProductCategory, pk=pk)
+#
+#     if request.method == 'POST':
+#         object.is_active = False
+#         object.save()
+#         return HttpResponseRedirect(reverse('myadmin:categories'))
+#
+#     context = {
+#         'title': 'категории/удаление',
+#         'object': object
+#     }
+#
+#     return render(request, 'adminapp/productcategory_delete.html', context)
 
-    if request.method == 'POST':
-        object.is_active = False
-        object.save()
-        return HttpResponseRedirect(reverse('myadmin:categories'))
 
-    context = {
-        'title': 'категории/удаление',
-        'object': object
-    }
+class ProductCategoryDeleteView(DeleteView):
+    model = ProductCategory
+    success_url = reverse_lazy('myadmin:categories')
 
-    return render(request, 'adminapp/productcategory_delete.html', context)
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+
+        return HttpResponseRedirect(self.get_success_url())
 
 
 @user_passes_test(lambda x: x.is_superuser)
@@ -208,15 +219,23 @@ def product_create(request, pk):
     return render(request, 'adminapp/product_update.html', context)
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def product_read(request, pk):
-    context = {
-        'title': 'продукт/подробнее',
-        'object': get_object_or_404(Product, pk=pk),
-    }
+# @user_passes_test(lambda x: x.is_superuser)
+# def product_read(request, pk):
+#     context = {
+#         'title': 'продукт/подробнее',
+#         'object': get_object_or_404(Product, pk=pk),
+#     }
+#
+#     return render(request, 'adminapp/product_read.html', context)
 
-    return render(request, 'adminapp/product_read.html', context)
 
+class ProductDetailView(DetailView):
+    model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'продукт/подробнее'
+        return context
 
 @user_passes_test(lambda x: x.is_superuser)
 def product_update(request, pk):
