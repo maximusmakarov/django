@@ -1,18 +1,19 @@
 <div class="links clearfix">
     <ul class="links-menu">
-        {{ request.resolver_mutch.url.name }}
         <li>
-            <a href="{% url 'main:category' 0 %}" class="{% if request.resolver_match.kwargs.pk|add:0 == 0 %}active{% endif %}">
+            <a href="{% url 'main:category' 0 1 %}"
+               class="{% if request.resolver_match.kwargs.pk == '0' %}active{% endif %}">
                 все
             </a>
         </li>
-        {% for link in links_menu %}
+        {% for element in links_menu %}
             <li>
-                <a href="{% url 'main:category' link.pk %}"
-                   class="{% if request.resolver_match.kwargs.pk|add:0 == link.pk %}active{% endif %}">
-                    {{ link.name }}
+                <a href="{% url 'main:category' element.pk 1 %}"
+                   class="{% if request.resolver_match.kwargs.pk|add:0 == element.pk %}active{% endif %}">
+                    {{ element.name }}
                 </a>
             </li>
         {% endfor %}
     </ul>
 </div>
+
