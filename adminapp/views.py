@@ -2,22 +2,29 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.views.generic.list import ListView
+from django.utils.decorators import method_decorator
+
 
 from adminapp.forms import ShopUserCreationAdminForm, ShopUserUpdateAdminForm, ProductCategoryEditForm, ProductEditForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def index(request):
-    users_list = ShopUser.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
+# @user_passes_test(lambda x: x.is_superuser)
+# def index(request):
+#     users_list = ShopUser.objects.all().order_by('-is_active', '-is_superuser', '-is_staff', 'username')
+#
+#     context = {
+#         'title': 'админка/пользователи',
+#         'objects': users_list
+#     }
+#
+#     return render(request, 'adminapp/index.html', context)
 
-    context = {
-        'title': 'админка/пользователи',
-        'objects': users_list
-    }
 
-    return render(request, 'adminapp/index.html', context)
+class UsersListView(ListView):
+    model = ShopUser
 
 
 @user_passes_test(lambda x: x.is_superuser)
@@ -178,6 +185,7 @@ def product_create(request, pk):
     return render(request, 'adminapp/product_update.html', context)
 
 
+@user_passes_test(lambda x: x.is_superuser)
 def product_read(request, pk):
     context = {
         'title': 'продукт/подробнее',
