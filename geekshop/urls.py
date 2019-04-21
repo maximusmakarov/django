@@ -13,12 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import re_path, include
 
-import mainapp.views as mainapp
+if settings.DEBUG:
+    import debug_toolbar
 
 urlpatterns = [
     re_path(r'^', include('mainapp.urls', namespace='main')),
@@ -26,7 +27,11 @@ urlpatterns = [
     re_path(r'^basket/', include('basketapp.urls', namespace='basket')),
     re_path(r'^admin/', admin.site.urls, name='admin'),
     re_path(r'^myadmin/', include('adminapp.urls', namespace='myadmin')),
+    re_path(r'^social/', include('social_django.urls', namespace='social')),
+    re_path(r'^__debug__/', include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
