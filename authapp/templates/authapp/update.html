@@ -1,6 +1,7 @@
 
 {% extends 'authapp/base.html' %}
 {% load static %}
+{% load media_tags %}
 
 
 {% block container %}
@@ -17,5 +18,5 @@
     </a>
     <br>
     <br>
-    <div class="user_avatar"><img alt="" src="/media/{{ user.avatar }}"></div>
+    <div class="user_avatar"><img alt="" src="{{ user.avatar|media_folder_users }}"></div>
 {% endblock %}

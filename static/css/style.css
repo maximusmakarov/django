@@ -381,7 +381,7 @@ html, body {
 
 .basket_container {
     margin: 25px auto;
-    width: 700px;
+    width: 1000px;
 }
 
 .basket_list input[type="number"] {
@@ -417,7 +417,7 @@ html, body {
 
 .basket_list span.product_cost {
     margin-left: 1em;
-    width: 7em;
+    width: 8em;
     position: relative;
     display: block;
     float: left;

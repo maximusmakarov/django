@@ -19,23 +19,23 @@
         <div class="details-products">
             <div class="details-slider">
                 <div class="slider-product">
-                    <img src="/media/{{ object.image }}"
+                    <img src="{{ object.image|media_folder_products }}"
                          alt="{{ object.short_desc }}">
                 </div>
                 <div class="slider-control">
                     <div class="block">
                         <a href="#">
-                            <img src="/media/{{ object.image }}" alt="вариант 1">
+                            <img src="{{ object.image|media_folder_products }}" alt="вариант 1">
                         </a>
                     </div>
                     <div class="block">
                         <a href="#">
-                            <img src="/media/{{ object.image }}" alt="вариант 2">
+                            <img src="{{ object.image|media_folder_products }}" alt="вариант 2">
                         </a>
                     </div>
                     <div class="block">
                         <a href="#">
-                            <img src="/media/{{ object.image }}" alt="вариант 3">
+                            <img src="{{ object.image|media_folder_products }}" alt="вариант 3">
                         </a>
                     </div>
                 </div>
