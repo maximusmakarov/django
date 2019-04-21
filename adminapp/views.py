@@ -173,71 +173,78 @@ def products(request, pk):
 #     }
 #
 #     return render(request, 'adminapp/productcategory_update.html', context)
-# @user_passes_test(lambda x: x.is_superuser)
-# def product_create(request, pk):
-#     category = get_object_or_404(ProductCategory, pk=pk)
+
+
+@user_passes_test(lambda x: x.is_superuser)
+def product_create(request, pk):
+    category = get_object_or_404(ProductCategory, pk=pk)
+
+    if request.method == 'POST':
+        form = ProductEditForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': pk}))
+    else:
+        form = ProductEditForm(initial={'category': category})
+
+    context = {
+        'title': 'продукты/создание',
+        'form': form,
+        'category': category
+    }
+
+    return render(request, 'mainapp/product_list.html', context)
+
+
+# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+# class ProductCreateView(CreateView):
+#     model = Product
+#     form_class = ProductEditForm
 #
-#     if request.method == 'POST':
-#         form = ProductEditForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': pk}))
-#     else:
-#         form = ProductEditForm(initial={'category': category})
+#     def get_context_data(self, **kwargs):
+#         self.success_url = reverse_lazy('myadmin:products', kwargs={'pk': self.kwargs['pk']})
+#         context = super(ProductCreateView, self).get_context_data(**kwargs)
+#         context['title'] = 'продукты/создание'
+#         return context
 #
-#     context = {
-#         'title': 'продукты/создание',
-#         'form': form,
-#         'category': category
-#     }
+#     def get_initial(self):
+#         self.initial['category'] = self.kwargs['pk']
+#         return self.initial
 #
-#     return render(request, 'adminapp/product_update.html', context)
+#     def get_success_url(self):
+#         return reverse_lazy('myadmin:products', kwargs=self.kwargs)
+
+@user_passes_test(lambda x: x.is_superuser)
+def product_update(request, pk):
+    product_object = get_object_or_404(Product, pk=pk)
+
+    if request.method == 'POST':
+        form = ProductEditForm(request.POST, request.FILES, instance=product_object)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': product_object.category.pk}))
+    else:
+        form = ProductEditForm(instance=product_object)
+
+    context = {
+        'title': 'продукты/редактирование',
+        'form': form,
+        'category': product_object.category
+    }
+
+    return render(request, 'mainapp/product_form.html', context)
 
 
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-class ProductCreateView(CreateView):
-    model = Product
-    success_url = reverse_lazy('myadmin:products', kwargs={'pk': 'pk'})
-    form_class = ProductEditForm
-
-    def get_context_data(self, **kwargs):
-        self.initial['category'] = self.kwargs['pk']
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'продукты/создание'
-        return context
-
-
-# @user_passes_test(lambda x: x.is_superuser)
-# def product_update(request, pk):
-#     product_object = get_object_or_404(Product, pk=pk)
+# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+# class ProductUpdateView(UpdateView):
+#     model = Product
+#     success_url = reverse_lazy('myadmin:products')
+#     form_class = ProductEditForm
 #
-#     if request.method == 'POST':
-#         form = ProductEditForm(request.POST, request.FILES, instance=product_object)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': product_object.category.pk}))
-#     else:
-#         form = ProductEditForm(instance=product_object)
-#
-#     context = {
-#         'title': 'продукты/редактирование',
-#         'form': form,
-#         'category': product_object.category
-#     }
-#
-#     return render(request, 'mainapp/product_form.html', context)
-
-
-@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-class ProductUpdateView(UpdateView):
-    model = Product
-    success_url = reverse_lazy('myadmin:products')
-    form_class = ProductEditForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'продукты/редактирование'
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['title'] = 'продукты/редактирование'
+#         return context
 
 
 # @user_passes_test(lambda x: x.is_superuser)
