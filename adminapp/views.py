@@ -33,26 +33,43 @@ class UsersListView(ListView):
         return context
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def categories(request):
-
-    object_list = ProductCategory.objects.all().order_by('-is_active', 'name')
-
-    content = {
-        'title': 'админка/категории',
-        'object_list': object_list
-    }
-
-    return render(request, 'adminapp/productcategory_list_1.html', content)
-
-# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-# class CategoriesListView(ListView):
-#     model = ProductCategory
+# @user_passes_test(lambda x: x.is_superuser)
+# def categories(request):
 #
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'админка/категории'
-#         return context
+#     object_list = ProductCategory.objects.all().order_by('-is_active', 'name')
+#
+#     content = {
+#         'title': 'админка/категории',
+#         'object_list': object_list
+#     }
+#
+#     return render(request, 'adminapp/productcategory_list_1.html', content)
+
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+class CategoriesListView(ListView):
+    model = ProductCategory
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'админка/категории'
+        return context
+
+# @user_passes_test(lambda x: x.is_superuser)
+# def productcategory_create(request):
+#     if request.method == 'POST':
+#         form = ProductCategoryEditForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('myadmin:categories'))
+#     else:
+#         form = ProductCategoryEditForm()
+#
+#     context = {
+#         'title': 'категории/создание',
+#         'form': form
+#     }
+#
+#     return render(request, 'adminapp/productcategory_update.html', context)
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
@@ -131,19 +148,19 @@ class ProductCategoryDeleteView(DeleteView):
         return context
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def products(request, pk):
-
-    category = get_object_or_404(ProductCategory, pk=pk)
-    object_list = category.product_set.all().order_by('name')
-
-    context = {
-        'title': 'админка/продукт',
-        'category': category,
-        'object_list': object_list,
-    }
-
-    return render(request, 'mainapp/product_list.html', context)
+# @user_passes_test(lambda x: x.is_superuser)
+# def products(request, pk):
+#
+#     category = get_object_or_404(ProductCategory, pk=pk)
+#     object_list = category.product_set.all().order_by('name')
+#
+#     context = {
+#         'title': 'админка/продукт',
+#         'category': category,
+#         'object_list': object_list,
+#     }
+#
+#     return render(request, 'adminapp/product_list.html', context)
 
 
 # @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
@@ -152,67 +169,75 @@ def products(request, pk):
 #     ordering = ['-is_active', 'name']
 #
 #     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
+#         category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
+#         context = super(ProductsListView, self).get_context_data(**kwargs)
 #         context['title'] = 'админка/продукт'
+#         # context['object_list'] = self.kwargs['pk']
+#         context['category'] = category
+#         context['object_list'] = category.product_set.all().order_by('name')
 #         return context
+#
+#     def get_queryset(self):
+#         return super().get_queryset().filter(category_id=self.kwargs['pk'])
+
+
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+class ProductsListView(ListView):
+    model = Product
+    ordering = ['-is_active', 'name']
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductsListView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        context['title'] = 'Список товаров'
+        return context
+
+    def get_queryset(self):
+        queryset = Product.objects.filter(category=self.kwargs['pk'])
+        return queryset
 
 
 # @user_passes_test(lambda x: x.is_superuser)
-# def productcategory_create(request):
+# def product_create(request, pk):
+#     category = get_object_or_404(ProductCategory, pk=pk)
+#
 #     if request.method == 'POST':
-#         form = ProductCategoryEditForm(request.POST, request.FILES)
+#         form = ProductEditForm(request.POST, request.FILES)
 #         if form.is_valid():
 #             form.save()
-#             return HttpResponseRedirect(reverse('myadmin:categories'))
+#             return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': pk}))
 #     else:
-#         form = ProductCategoryEditForm()
+#         form = ProductEditForm(initial={'category': category})
 #
 #     context = {
-#         'title': 'категории/создание',
-#         'form': form
+#         'title': 'продукты/создание',
+#         'form': form,
+#         'category': category
 #     }
 #
-#     return render(request, 'adminapp/productcategory_update.html', context)
+#     return render(request, 'mainapp/product_form.html', context)
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def product_create(request, pk):
-    category = get_object_or_404(ProductCategory, pk=pk)
+@method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductEditForm
 
-    if request.method == 'POST':
-        form = ProductEditForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': pk}))
-    else:
-        form = ProductEditForm(initial={'category': category})
+    def get_context_data(self, **kwargs):
+        self.success_url = reverse_lazy('myadmin:products', kwargs={'pk': self.kwargs['pk']})
+        category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
+        context = super(ProductCreateView, self).get_context_data(**kwargs)
+        context['title'] = 'продукты/создание'
+        context['category'] = category
+        return context
 
-    context = {
-        'title': 'продукты/создание',
-        'form': form,
-        'category': category
-    }
+    def get_initial(self):
+        self.initial['category'] = self.kwargs['pk']
+        return self.initial
 
-    return render(request, 'mainapp/product_list.html', context)
+    def get_success_url(self):
+        return reverse_lazy('myadmin:products', kwargs=self.kwargs)
 
-
-# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-# class ProductCreateView(CreateView):
-#     model = Product
-#     form_class = ProductEditForm
-#
-#     def get_context_data(self, **kwargs):
-#         self.success_url = reverse_lazy('myadmin:products', kwargs={'pk': self.kwargs['pk']})
-#         context = super(ProductCreateView, self).get_context_data(**kwargs)
-#         context['title'] = 'продукты/создание'
-#         return context
-#
-#     def get_initial(self):
-#         self.initial['category'] = self.kwargs['pk']
-#         return self.initial
-#
-#     def get_success_url(self):
-#         return reverse_lazy('myadmin:products', kwargs=self.kwargs)
 
 @user_passes_test(lambda x: x.is_superuser)
 def product_update(request, pk):
@@ -233,18 +258,6 @@ def product_update(request, pk):
     }
 
     return render(request, 'mainapp/product_form.html', context)
-
-
-# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-# class ProductUpdateView(UpdateView):
-#     model = Product
-#     success_url = reverse_lazy('myadmin:products')
-#     form_class = ProductEditForm
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['title'] = 'продукты/редактирование'
-#         return context
 
 
 # @user_passes_test(lambda x: x.is_superuser)
