@@ -42,11 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'social_django',
     'mainapp.apps.MainappConfig',
     'authapp.apps.AuthappConfig',
     'basketapp.apps.BasketappConfig',
     'adminapp.apps.AdminappConfig',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 INTERNAL_IPS = [
@@ -77,7 +78,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'social_django.context_processors.backends',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -187,3 +189,9 @@ DEBUG_TOOLBAR_PANELS = [
 ]
 
 SESSION_COOKIE_SAMESITE = None
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+
+if not DEBUG:
+    LOGIN_ERROR_URL = '/'
+LOGIN_URL = '/auth/login/'

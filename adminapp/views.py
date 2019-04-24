@@ -305,7 +305,7 @@ class ProductDeleteView(DeleteView):
     success_url = reverse_lazy('myadmin:products')
 
     def delete(self, request, *args, **kwargs):
-        self.kwargs = {'pk': object}
+        # self.kwargs = {'pk': object}
         self.object = self.get_object()
         self.object.is_active = False
         self.object.save()

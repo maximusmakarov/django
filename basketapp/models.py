@@ -9,6 +9,10 @@ class Basket(models.Model):
     quantity = models.PositiveIntegerField(verbose_name='количество', default=0)
     add_datetime = models.DateTimeField(verbose_name='время', auto_now_add=True)
 
+    # def get_need_param(param):
+    #     _items = тут запрос
+    #     retrun sum(map(lambda x: getattr(x.quantity, ), _items))
+
     @property
     def product_cost(self):
         # "return cost of all products this type"
@@ -17,9 +21,9 @@ class Basket(models.Model):
     @property
     def total_quantity(self):
         # "return total quantity for user"
-        return sum(list(map(lambda x: x.quantity, self.user.basket.select_related('product').all())))
+        return sum(map(lambda x: x.quantity, self.user.basket.select_related('user').all()))
 
     @property
     def total_cost(self):
         # "return total cost for user"
-        return sum(list(map(lambda x: x.product_cost, self.user.basket.select_related('product').all())))
+        return sum(map(lambda x: x.product_cost, self.user.basket.select_related().all()))
