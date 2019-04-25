@@ -280,40 +280,43 @@ class ProductDetailView(DetailView):
         return context
 
 
-@user_passes_test(lambda x: x.is_superuser)
-def product_delete(request, pk):
-    object = get_object_or_404(Product, pk=pk)
-
-    if request.method == 'POST':
-        object.is_active = False
-        object.save()
-        return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': object.category.pk}))
-
-    context = {
-        'title': 'продукты/удаление',
-        'object': object,
-        'category': object.category
-
-    }
-
-    return render(request, 'mainapp/product_confirm_delete.html', context)
+# @user_passes_test(lambda x: x.is_superuser)
+# def product_delete(request, pk):
+#     object = get_object_or_404(Product, pk=pk)
+#
+#     if request.method == 'POST':
+#         object.is_active = False
+#         object.save()
+#         return HttpResponseRedirect(reverse('myadmin:products', kwargs={'pk': object.category.pk}))
+#
+#     context = {
+#         'title': 'продукты/удаление',
+#         'object': object,
+#         'category': object.category
+#
+#     }
+#
+#     return render(request, 'mainapp/product_confirm_delete.html', context)
 
 
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 class ProductDeleteView(DeleteView):
     model = Product
-    success_url = reverse_lazy('myadmin:products')
 
-    def delete(self, request, *args, **kwargs):
-        # self.kwargs = {'pk': object}
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
+    def get_success_url(self):
+        category = get_object_or_404(Product, pk=self.kwargs['pk']).category.pk
+        return reverse_lazy('myadmin:products', kwargs={'pk': category})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'продукты/удаление'
         return context
+
+    def delete(self, request, *args, **kwargs):
+        object = get_object_or_404(Product, pk=kwargs['pk'])
+        object.is_active = False
+        object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 @user_passes_test(lambda x: x.is_superuser)

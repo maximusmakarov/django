@@ -13,7 +13,7 @@
             {% csrf_token %}
             <input class="btn btn-danger" type="submit" value="удалить">
         </form>
-        <a href="{% url 'myadmin:products' category.pk %}" class="btn btn-success">
+        <a href="{% url 'myadmin:products' product.category.pk %}" class="btn btn-success">
             Отмена
         </a>
     </div>

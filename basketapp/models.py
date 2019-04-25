@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from mainapp.models import Product
+from functools import reduce
+from operator import mul
 
 
 class Basket(models.Model):
@@ -9,21 +11,32 @@ class Basket(models.Model):
     quantity = models.PositiveIntegerField(verbose_name='количество', default=0)
     add_datetime = models.DateTimeField(verbose_name='время', auto_now_add=True)
 
-    # def get_need_param(param):
-    #     _items = тут запрос
-    #     retrun sum(map(lambda x: getattr(x.quantity, ), _items))
 
     @property
     def product_cost(self):
         # "return cost of all products this type"
         return self.product.price * self.quantity
 
+    # @property
+    # def total_quantity(self):
+    #     # "return total quantity for user"
+    #     return sum(map(lambda x: x.quantity, self.user.basket.select_related('user')))
+    #
+    # @property
+    # def total_cost(self):
+    #     # "return total cost for user"
+    #     return sum(map(lambda x: x.product_cost, self.user.basket.select_related()))
+
     @property
     def total_quantity(self):
-        # "return total quantity for user"
-        return sum(map(lambda x: x.quantity, self.user.basket.select_related('user').all()))
+        "return total quantity for user"
+        quantity = Basket.objects.filter(user=self.user)
+        quantity = quantity.aggregate(models.Sum('quantity')).get('quantity__sum', 0)
+        return quantity
 
     @property
     def total_cost(self):
-        # "return total cost for user"
-        return sum(map(lambda x: x.product_cost, self.user.basket.select_related().all()))
+        "return total cost for user"
+        _items = Basket.objects.filter(user=self.user)
+        _items = _items.values_list('product__price', 'quantity')
+        return reduce(lambda x, b: x + mul(*b), _items, 0)
