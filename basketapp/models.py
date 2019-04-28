@@ -18,24 +18,24 @@ class Basket(models.Model):
         return self.product.price * self.quantity
 
     # @property
-    # def total_quantity(self):
+    # def total_number(self):
     #     # "return total quantity for user"
     #     return sum(map(lambda x: x.quantity, self.user.basket.select_related('user')))
     #
     # @property
-    # def total_cost(self):
+    # def total_amount(self):
     #     # "return total cost for user"
     #     return sum(map(lambda x: x.product_cost, self.user.basket.select_related()))
 
     @property
-    def total_quantity(self):
+    def total_number(self):
         "return total quantity for user"
         quantity = Basket.objects.filter(user=self.user)
         quantity = quantity.aggregate(models.Sum('quantity')).get('quantity__sum', 0)
         return quantity
 
     @property
-    def total_cost(self):
+    def total_amount(self):
         "return total cost for user"
         _items = Basket.objects.filter(user=self.user)
         _items = _items.values_list('product__price', 'quantity')

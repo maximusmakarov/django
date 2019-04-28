@@ -1,5 +1,7 @@
 import datetime
 import random
+from datetime import timedelta
+
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

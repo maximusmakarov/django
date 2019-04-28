@@ -9,12 +9,12 @@
         {% endif %}
         {{ form.as_table }}
         <br>
-        <input class="form-control" type="submit" value="Войти">
+        <input class="btn btn-primary form-control" type="submit" value="Войти">
     </form>
     <a class="btn btn-success form-control" href="/social/login/vk-oauth2/">
         Войти через VK
     </a>
-    <a class="btn btn-primary form-control" href="{% url 'auth:register' %}">
+    <a class="btn btn-secondary form-control" href="{% url 'auth:register' %}">
         Зарегистрироваться
     </a>
 

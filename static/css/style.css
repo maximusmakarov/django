@@ -1667,8 +1667,8 @@ td:first-child {
 }
 .related-products a .text {
 	display: none;
-	height: 368px;
-	width: 368px;
+	height: 268px;
+	width: 268px;
 	background-color: #ffffff;
     opacity: 0.9;
     position: absolute;

@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
+    'debug_toolbar.apps.DebugToolbarConfig',
     'mainapp.apps.MainappConfig',
     'authapp.apps.AuthappConfig',
     'basketapp.apps.BasketappConfig',
@@ -134,15 +134,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-
     os.path.join(BASE_DIR, "static")
-
 ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'authapp.ShopUser'
+if not DEBUG:
+    LOGIN_ERROR_URL = '/'
 LOGIN_URL = '/auth/login/'
 
 AUTHENTICATION_BACKENDS = (
@@ -150,8 +150,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SOCIAL_AUTH_VK_OAUTH2_KEY = config.get('OAUTH2', 'SOCIAL_AUTH_VK_OAUTH2_KEY')
-SOCIAL_AUTH_VK_OAUTH2_SECRET = config.get('OAUTH2', 'SOCIAL_AUTH_VK_OAUTH2_SECRET')
 # SOCIAL_AUTH_VK_OAUTH2_SCOPE = [
 #     # 'notify',
 #     # 'friends',
@@ -169,8 +167,6 @@ SOCIAL_AUTH_VK_OAUTH2_SECRET = config.get('OAUTH2', 'SOCIAL_AUTH_VK_OAUTH2_SECRE
 #     'social_core.pipeline.user.user_details',
 #     'social_core.pipeline.social_auth.associate_by_email',
 # )
-
-LOGIN_REDIRECT_URL = '/'
 
 
 DEBUG_TOOLBAR_PANELS = [
@@ -192,6 +188,17 @@ SESSION_COOKIE_SAMESITE = None
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
 
-if not DEBUG:
-    LOGIN_ERROR_URL = '/'
-LOGIN_URL = '/auth/login/'
+SOCIAL_AUTH_VK_OAUTH2_KEY = config.get('OAUTH2', 'SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = config.get('OAUTH2', 'SOCIAL_AUTH_VK_OAUTH2_SECRET')
+
+DOMAIN_NAME = 'http://127.0.0.1:8000'
+
+# EMAIL_HOST = 'smtp.mail.ru'
+# EMAIL_PORT = '465'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = config.get('smtp', 'PASSWORD')
+# EMAIL_USE_SSL = True
+
+# вариант логирования сообщений почты в виде файлов вместо отправки
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
