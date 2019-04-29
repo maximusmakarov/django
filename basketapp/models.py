@@ -17,15 +17,6 @@ class Basket(models.Model):
         # "return cost of all products this type"
         return self.product.price * self.quantity
 
-    # @property
-    # def total_number(self):
-    #     # "return total quantity for user"
-    #     return sum(map(lambda x: x.quantity, self.user.basket.select_related('user')))
-    #
-    # @property
-    # def total_amount(self):
-    #     # "return total cost for user"
-    #     return sum(map(lambda x: x.product_cost, self.user.basket.select_related()))
 
     @property
     def total_number(self):

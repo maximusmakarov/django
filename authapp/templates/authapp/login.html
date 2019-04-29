@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block container %}
+    <div class="h2 text-center head">
+        Вход в систему
+    </div>
     <form class="form-horizontal" method="post">
         {% csrf_token %}
         {% if next %}

@@ -80,6 +80,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'mainapp.context_processors.basket',
+                'mainapp.context_processors.menu',
             ],
         },
     },

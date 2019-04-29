@@ -5,6 +5,9 @@
 
 
 {% block container %}
+    <div class="h2 text-center head">
+        Редактирование профиля
+    </div>
 
     <form class="form-horizontal" action="{% url 'auth:update' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
