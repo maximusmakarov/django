@@ -22,6 +22,7 @@ def login(request):
 
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
+            # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             auth.login(request, user)
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
@@ -52,7 +53,7 @@ def register(request):
             user = form.save()
             if send_verify_mail(user):
                 print('сообщение подтверждения отправлено ' + user.username)
-                return HttpResponseRedirect(reverse('main:index'))
+                return render(request, 'authapp/send_mail.html')
             else:
                 print('ошибка отправки сообщения')
                 return HttpResponseRedirect(reverse('auth:login'))
@@ -106,10 +107,9 @@ def verify(request, email, activation_key):
             user.is_active = True
             user.save()
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, 'authapp/verification.html')
         else:
             print(f'error activation user: {user}')
-            return render(request, 'authapp/verification.html')
+        return render(request, 'authapp/verification.html')
     except Exception as e:
         print(f'error activation user : {e.args}')
         return HttpResponseRedirect(reverse('main:index'))

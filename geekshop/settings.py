@@ -43,10 +43,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar.apps.DebugToolbarConfig',
     'mainapp.apps.MainappConfig',
+    'social_django',
     'authapp.apps.AuthappConfig',
     'basketapp.apps.BasketappConfig',
     'adminapp.apps.AdminappConfig',
-    'social_django',
 ]
 
 MIDDLEWARE = [
