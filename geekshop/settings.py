@@ -154,12 +154,7 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_REDIRECT_URL = '/'
 
-# SOCIAL_AUTH_VK_OAUTH2_SCOPE = [
-#     # 'notify',
-#     # 'friends',
-#     'email',
-#  ]
-#
+
 # SOCIAL_AUTH_PIPELINE = (
 #     'social_core.pipeline.social_auth.social_details',
 #     'social_core.pipeline.social_auth.social_uid',

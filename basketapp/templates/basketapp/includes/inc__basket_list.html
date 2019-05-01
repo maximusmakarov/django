@@ -2,10 +2,10 @@
 
 {% for item in basket_items %}
     <div class="basket_record">
-        <img src="{{ item.product.image|media_folder_products }}"
-             alt="{{ item.product.short_desc }}">
+        <a href="{% url 'main:product' item.product.pk %}" ><img src="{{ item.product.image|media_folder_products }}"
+             alt="{{ item.product.short_desc }}" ></a>
         <span class="category_name">{{ item.product.category.name }}</span>
-        <span class="product_name">{{ item.product.name }}</span>
+        <a href="{% url 'main:product' item.product.pk %}" ><span class="product_name">{{ item.product.name }}</span></a>
         <span class="product_price">{{ item.product.price }}&nbspруб</span>
         <input type="number" name="{{ item.pk }}" min="0" value="{{ item.quantity }}">
         <span class="product_cost">{{ item.product_cost }}&nbspруб</span>
