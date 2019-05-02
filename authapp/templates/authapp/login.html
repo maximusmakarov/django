@@ -14,7 +14,7 @@
         <br>
         <input class="btn btn-primary form-control" type="submit" value="Войти">
     </form>
-    <a class="btn btn-success form-control" href="/social/login/vk-oauth2/">
+    <a class="btn btn-success form-control" href="{% url 'social:begin' 'vk-oauth2' %}?next=/">
         Войти через VK
     </a>
     <a class="btn btn-secondary form-control" href="{% url 'auth:register' %}">
