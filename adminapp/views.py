@@ -163,24 +163,6 @@ class ProductCategoryDeleteView(DeleteView):
 #     return render(request, 'adminapp/product_list.html', context)
 
 
-# @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
-# class ProductsListView(ListView):
-#     model = Product
-#     ordering = ['-is_active', 'name']
-#
-#     def get_context_data(self, **kwargs):
-#         category = get_object_or_404(ProductCategory, pk=self.kwargs['pk'])
-#         context = super(ProductsListView, self).get_context_data(**kwargs)
-#         context['title'] = 'админка/продукт'
-#         # context['object_list'] = self.kwargs['pk']
-#         context['category'] = category
-#         context['object_list'] = category.product_set.all().order_by('name')
-#         return context
-#
-#     def get_queryset(self):
-#         return super().get_queryset().filter(category_id=self.kwargs['pk'])
-
-
 @method_decorator(user_passes_test(lambda u: u.is_superuser), name='dispatch')
 class ProductsListView(ListView):
     model = Product
