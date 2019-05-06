@@ -21,5 +21,11 @@
     </a>
     <br>
     <br>
-    <div class="user_avatar"><img alt="" src="{{ user.avatar|media_folder_users }}"></div>
+    <div class="user_avatar"><img alt="фото {{ user }}" src="
+        {% if profile_user.photo_vk %}
+        {{ profile_user.photo_vk }}
+        {% else %}
+        {{ user.avatar|media_folder_users }}
+        {% endif %}">
+    </div>
 {% endblock %}

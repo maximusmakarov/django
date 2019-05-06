@@ -2,7 +2,6 @@ from mainapp.models import ProductCategory
 
 
 def basket(request):
-    print('basket context processor')
     if request.user.is_authenticated:
         return {
             'basket': request.user.basket.all()

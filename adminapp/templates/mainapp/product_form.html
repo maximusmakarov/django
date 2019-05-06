@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block container %}
+    <div class="h2 text-center head">
+        {{  title|title }}
+    </div>
     <div class="new_category_form">
         <form class="form-horizontal" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -14,5 +17,5 @@
         <a href="{% url 'myadmin:categories' %}" class="btn btn-primary form-control last">
             к списку продуктов
         </a>
-    <div>
+    </div>
 {% endblock %}

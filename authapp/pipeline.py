@@ -12,18 +12,16 @@ from PIL import Image, ImageFile
 
 
 def save_user_profile(backend, user, response, *args, **kwargs):
-    print(response.keys())
     if backend.name != 'vk-oauth2':
         return
 
-    api_url = urlunparse(('https',
-                          'api.vk.com',
-                          '/method/users.get',
-                          None,
-                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo', 'lang')),
+    api_url = urlunparse(('https', 'api.vk.com', '/method/users.get', None,
+                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo_max', 'screen_name',
+                                                                 'language')),
                                                 access_token=response['access_token'], v='5.95')), None))
 
     resp = requests.get(api_url)
+
     if resp.status_code != 200:
         return
 
@@ -43,29 +41,29 @@ def save_user_profile(backend, user, response, *args, **kwargs):
             user.delete()
             raise AuthForbidden('social_core.backends.vk.VKOAuth2')
 
-    if data['photo']:
-        user.avatar = data['photo']
-        # temp_image = StringIO()
-        # ImageFile.Parser().close().save(temp_image, 'png')
-        # temp_image.seek(0)
-        # user.avatar = File(temp_image, 'photo')
+    if data['photo_max']:
+        user.shopuserprofile.photo_vk = data['photo_max']
 
-    if data['lang']:
-        if data['lang'] == 0:
+    if data['screen_name']:
+        user.shopuserprofile.link_social = 'https://vk.com/' + data['screen_name']
+
+    if data['language']:
+        if data['language'] == 0:
             user.shopuserprofile.lang = ShopUserProfile.RU
-        elif data['lang'] == 1:
-            user.shopuserprofile.lang = ShopUserProfile.UK
-        elif data['lang'] == 2:
-            user.shopuserprofile.lang = ShopUserProfile.BE
-        elif data['lang'] == 3:
+        # elif data['lang'] == 1:
+        #     user.shopuserprofile.lang = ShopUserProfile.UK
+        # elif data['lang'] == 2:
+        #     user.shopuserprofile.lang = ShopUserProfile.BE
+        elif data['language'] == 3:
             user.shopuserprofile.lang = ShopUserProfile.EN
-        elif data['lang'] == 4:
-            user.shopuserprofile.lang = ShopUserProfile.ES
-        elif data['lang'] == 5:
-            user.shopuserprofile.lang = ShopUserProfile.FI
-        elif data['lang'] == 6:
-            user.shopuserprofile.lang = ShopUserProfile.DE
-        elif data['lang'] == 7:
-            user.shopuserprofile.lang = ShopUserProfile.IT
-
+        # elif data['lang'] == 4:
+        #     user.shopuserprofile.lang = ShopUserProfile.ES
+        # elif data['lang'] == 5:
+        #     user.shopuserprofile.lang = ShopUserProfile.FI
+        # elif data['lang'] == 6:
+        #     user.shopuserprofile.lang = ShopUserProfile.DE
+        # elif data['lang'] == 7:
+        #     user.shopuserprofile.lang = ShopUserProfile.IT
+        else:
+            user.shopuserprofile.lang = ShopUserProfile.RU
     user.save()

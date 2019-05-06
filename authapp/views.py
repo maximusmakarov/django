@@ -23,7 +23,6 @@ def login(request):
 
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
-            # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             auth.login(request, user)
             if 'next' in request.POST.keys():
                 return HttpResponseRedirect(request.POST['next'])
@@ -84,7 +83,8 @@ def update(request):
     context = {
         'title': 'редактирование',
         'form': form,
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'profile_user': request.user.shopuserprofile
     }
 
     return render(request, 'authapp/update.html', context)

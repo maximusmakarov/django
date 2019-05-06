@@ -79,7 +79,7 @@ class ShopUserEditForm(UserChangeForm):
 class ShopUserProfileEditForm(forms.ModelForm):
     class Meta:
         model = ShopUserProfile
-        fields = ('tags', 'aboutMe', 'gender')
+        exclude = ('photo_vk', )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
