@@ -4,7 +4,11 @@
 {% block menu %}
 {% endblock %}
 
+
 {% block container %}
+    <div class="h2 text-center head">
+        {{  title|title }}
+    </div>
     <form class="form-horizontal" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

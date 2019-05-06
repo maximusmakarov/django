@@ -12,6 +12,7 @@ from PIL import Image, ImageFile
 
 
 def save_user_profile(backend, user, response, *args, **kwargs):
+    print(response.keys())
     if backend.name != 'vk-oauth2':
         return
 
@@ -19,11 +20,8 @@ def save_user_profile(backend, user, response, *args, **kwargs):
                           'api.vk.com',
                           '/method/users.get',
                           None,
-                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo')),
-                                                access_token=response['access_token'],
-                                                v='5.95')),
-                          None
-                          ))
+                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo', 'lang')),
+                                                access_token=response['access_token'], v='5.95')), None))
 
     resp = requests.get(api_url)
     if resp.status_code != 200:
@@ -51,5 +49,23 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         # ImageFile.Parser().close().save(temp_image, 'png')
         # temp_image.seek(0)
         # user.avatar = File(temp_image, 'photo')
+
+    if data['lang']:
+        if data['lang'] == 0:
+            user.shopuserprofile.lang = ShopUserProfile.RU
+        elif data['lang'] == 1:
+            user.shopuserprofile.lang = ShopUserProfile.UK
+        elif data['lang'] == 2:
+            user.shopuserprofile.lang = ShopUserProfile.BE
+        elif data['lang'] == 3:
+            user.shopuserprofile.lang = ShopUserProfile.EN
+        elif data['lang'] == 4:
+            user.shopuserprofile.lang = ShopUserProfile.ES
+        elif data['lang'] == 5:
+            user.shopuserprofile.lang = ShopUserProfile.FI
+        elif data['lang'] == 6:
+            user.shopuserprofile.lang = ShopUserProfile.DE
+        elif data['lang'] == 7:
+            user.shopuserprofile.lang = ShopUserProfile.IT
 
     user.save()

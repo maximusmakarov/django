@@ -31,10 +31,31 @@ class ShopUserProfile(models.Model):
         (FEMALE, 'ЖЕНСКИЙ'),
     )
 
+    RU = 0
+    UK = 1
+    BE = 2
+    EN = 3
+    ES = 4
+    FI = 5
+    DE = 6
+    IT = 7
+
+    LANGUAGE_CHOICES = (
+        (RU, 'РУССКИЙ'),
+        (UK, 'УКРАИНСКИЙ'),
+        (BE, 'БЕЛОРУССКИЙ'),
+        (EN, 'АНГЛИЙСКИЙ'),
+        (ES, 'ИСПАНСКИЙ'),
+        (FI, 'ФИНСКИЙ'),
+        (DE, 'НЕМЕЦКИЙ'),
+        (IT, 'ИТАЛЬЯРНСКИЙ'),
+    )
+
     user = models.OneToOneField(ShopUser, primary_key=True, on_delete=models.CASCADE)
     tags = models.CharField(verbose_name='теги', max_length=128, blank=True)
     aboutMe = models.TextField(verbose_name='о себе', max_length=512, blank=True)
     gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)
+    lang = models.CharField(verbose_name='язык', max_length=3, choices=LANGUAGE_CHOICES, blank=True)
 
     @receiver(post_save, sender=ShopUser)
     def create_profile(sender, instance, created, **kwargs):
