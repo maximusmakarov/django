@@ -4,6 +4,62 @@
 	padding: 0;
 }
 
+.order_container {
+    margin: 25px auto;
+    width: 900px;
+}
+
+.order_container button a {
+    text-decoration: none;
+    color: #555;
+}
+
+.order_container img {
+    display: block;
+    float: left;
+    width: 150px;
+    border-radius: 25px;
+}
+
+
+button.last {
+    margin-bottom: 10px;
+}
+
+.not_active {
+    opacity: 0.5;
+}
+
+.table.orders_list {
+    min-width: 600px;
+}
+
+.td1.orders_list {
+    width: 40px;
+}
+
+.table.order.formset {
+    min-width: 400px;
+}
+
+.td1.order.formset_td {
+    /*width: 70%;*/
+}
+
+.td2.order.formset_td {
+    /*width: 50px;*/
+}
+
+.td3.order.formset_td {
+    /*width: 50px;*/
+    text-align: center;
+}
+
+.td4.order.formset_td {
+    /*width: 50px;*/
+    text-align: center;
+}
+
 body {
 	font-family: 'Montserrat', sans-serif;
 }
@@ -96,7 +152,7 @@ html, body {
 }
 
 .products_list {
-    margin-left: 200px;
+    margin-left: 250px;
 }
 
 .products_list .new_product {
@@ -118,8 +174,8 @@ html, body {
 }
 
 .product_record {
-    height: 200px;
-    margin: 25px auto;
+    height: 125px;
+    margin: 15px auto;
     position: relative;
 }
 
@@ -148,7 +204,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 15px;
-    margin-left: 50px;
+    margin-left: 25px;
     width: 350px;
 }
 
@@ -156,7 +212,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 15px;
-    margin-left: 50px;
+    margin-left: 25px;
     width: 100px;
 }
 
@@ -230,7 +286,7 @@ html, body {
     float: left;
     margin-top: 15px;
     margin-left: 25px;
-    width: 250px;
+    width: 150px;
     font-size: 150%;
 }
 
@@ -312,7 +368,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 15px;
-    margin-left: 70px;
+    margin-left: 25px;
     width: 175px;
 }
 
@@ -353,7 +409,7 @@ html, body {
     display: block;
     float: left;
     margin-top: 40px;
-    margin-left: 70px;
+    margin-left: 25px;
     width: 175px;
 }
 
@@ -381,7 +437,7 @@ html, body {
 
 .basket_container {
     margin: 25px auto;
-    width: 1000px;
+    width: 900px;
 }
 
 .basket_list input[type="number"] {
@@ -415,9 +471,17 @@ html, body {
     float: left;
 }
 
+.basket_list span.product_quantitiy {
+    margin-left: 1em;
+    width: 5em;
+    position: relative;
+    display: block;
+    float: left;
+}
+
 .basket_list span.product_cost {
     margin-left: 1em;
-    width: 8em;
+    width: 10em;
     position: relative;
     display: block;
     float: left;
@@ -522,7 +586,7 @@ html, body {
 }
 .category-products .block {
 	float: left;
-	margin-right: 0px;
+	margin-right: 30px;
 	display: block;
 	height: 370px;
 	width: 370px;
@@ -533,8 +597,8 @@ html, body {
 }
 .category-products a .text {
 	display: none;
-	height: 268px;
-	width: 268px;
+	height: 368px;
+	width: 368px;
 	background-color: #ffffff;
     opacity: 0.9;
     position: absolute;
@@ -1667,8 +1731,8 @@ td:first-child {
 }
 .related-products a .text {
 	display: none;
-	height: 268px;
-	width: 268px;
+	height: 368px;
+	width: 368px;
 	background-color: #ffffff;
     opacity: 0.9;
     position: absolute;
@@ -1696,11 +1760,4 @@ td:first-child {
 }
 .related-products a:hover .text{
 	display: block;
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-
-    opacity: 1;
-
 }
