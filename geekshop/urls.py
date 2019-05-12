@@ -28,6 +28,7 @@ urlpatterns = [
     re_path(r'^basket/', include('basketapp.urls', namespace='basket')),
     re_path(r'^admin/', admin.site.urls, name='admin'),
     re_path(r'^myadmin/', include('adminapp.urls', namespace='myadmin')),
+    re_path(r'^orders/', include('ordersapp.urls', namespace='bookings')),
     # re_path(r'^__debug__/', include(debug_toolbar.urls)),
 ]
 

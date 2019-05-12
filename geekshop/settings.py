@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'authapp.apps.AuthappConfig',
     'basketapp.apps.BasketappConfig',
     'adminapp.apps.AdminappConfig',
+    'ordersapp.apps.OrdersappConfig'
 ]
 
 MIDDLEWARE = [
