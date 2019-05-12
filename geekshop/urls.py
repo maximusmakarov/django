@@ -18,17 +18,17 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import re_path, include
 
-if settings.DEBUG:
-    import debug_toolbar
+# if settings.DEBUG:
+#     import debug_toolbar
 
 urlpatterns = [
     re_path(r'^', include('mainapp.urls', namespace='main')),
-    re_path(r'^social/', include('social_django.urls', namespace='social')),
+    re_path(r'^social/verify/', include('social_django.urls', namespace='social')),
     re_path(r'^auth/', include('authapp.urls', namespace='auth')),
     re_path(r'^basket/', include('basketapp.urls', namespace='basket')),
     re_path(r'^admin/', admin.site.urls, name='admin'),
     re_path(r'^myadmin/', include('adminapp.urls', namespace='myadmin')),
-    re_path(r'^__debug__/', include(debug_toolbar.urls)),
+    # re_path(r'^__debug__/', include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:

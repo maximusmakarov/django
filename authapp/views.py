@@ -81,7 +81,7 @@ def update(request):
         profile_form = ShopUserProfileEditForm(instance=request.user.shopuserprofile)
 
     context = {
-        'title': 'редактирование',
+        'title': 'Редактирование профиля',
         'form': form,
         'profile_form': profile_form,
         'profile_user': request.user.shopuserprofile

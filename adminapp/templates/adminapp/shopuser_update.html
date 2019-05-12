@@ -1,5 +1,6 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
+{% load media_tags %}
 
 {% block menu %}
 {% endblock %}
@@ -17,4 +18,14 @@
     <a href="{% url 'myadmin:index' %}" class="btn btn-primary form-control last">
         к списку пользователей
     </a>
+    <br>
+    <br>
+    <div class="user_avatar">
+        <img alt="фото {{ user }}" src="
+        {% if profile_user.photo_vk %}
+        {{ profile_user.photo_vk }}
+        {% else %}
+        {{ user.avatar|media_folder_users }}
+        {% endif %}">
+    </div>
 {% endblock %}

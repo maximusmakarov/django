@@ -16,7 +16,7 @@ def save_user_profile(backend, user, response, *args, **kwargs):
         return
 
     api_url = urlunparse(('https', 'api.vk.com', '/method/users.get', None,
-                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo_max', 'screen_name',
+                          urlencode(OrderedDict(fields=','.join(('bdate', 'sex', 'about', 'photo_200', 'screen_name',
                                                                  'language')),
                                                 access_token=response['access_token'], v='5.95')), None))
 
@@ -41,8 +41,8 @@ def save_user_profile(backend, user, response, *args, **kwargs):
             user.delete()
             raise AuthForbidden('social_core.backends.vk.VKOAuth2')
 
-    if data['photo_max']:
-        user.shopuserprofile.photo_vk = data['photo_max']
+    if data['photo_200']:
+        user.shopuserprofile.photo_vk = data['photo_200']
 
     if data['screen_name']:
         user.shopuserprofile.link_social = 'https://vk.com/' + data['screen_name']

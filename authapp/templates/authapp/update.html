@@ -5,7 +5,7 @@
 
 {% block container %}
     <div class="h2 text-center head">
-        Редактирование профиля
+        {{ title|title }}
     </div>
 
     <form class="form-horizontal" action="{% url 'auth:update' %}" method="post" enctype="multipart/form-data">
