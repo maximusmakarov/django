@@ -4,5 +4,5 @@ import ordersapp.views as ordersapp
 app_name = 'ordersapp'
 
 urlpatterns = [
-    re_path(r'^$', ordersapp.index, name='index'),
+    re_path(r'^$', ordersapp.OrderList.as_view(), name='index'),
 ]
