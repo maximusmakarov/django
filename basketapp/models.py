@@ -20,14 +20,14 @@ class Basket(models.Model):
 
     @property
     def total_number(self):
-        "return total quantity for user"
+        """"return total quantity for user"""
         quantity = Basket.objects.filter(user=self.user)
         quantity = quantity.aggregate(models.Sum('quantity')).get('quantity__sum', 0)
         return quantity
 
     @property
     def total_amount(self):
-        "return total cost for user"
+        """return total cost for user"""
         _items = Basket.objects.filter(user=self.user)
         _items = _items.values_list('product__price', 'quantity')
         return reduce(lambda x, b: x + mul(*b), _items, 0)
