@@ -1,17 +1,17 @@
+from django.db import transaction
+from django.db.models.signals import pre_save, pre_delete
+from django.dispatch import receiver
+from django.forms import inlineformset_factory
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
-from django.db import transaction
-
-from django.forms import inlineformset_factory
-
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 
 from basketapp.models import Basket
-from ordersapp.models import Order, OrderItem
+from mainapp.models import Product
 from ordersapp.forms import OrderItemForm
-from django.dispatch import receiver
-from django.db.models.signals import pre_save, pre_delete
+from ordersapp.models import Order, OrderItem
 
 
 class OrderList(ListView):
@@ -24,8 +24,6 @@ class OrderList(ListView):
 class OrderItemsCreate(CreateView):
     model = Order
     fields = []
-    # form_class = OrderForm
-
     success_url = reverse_lazy('ordersapp:index')
 
     def get_context_data(self, **kwargs):
@@ -63,11 +61,6 @@ class OrderItemsCreate(CreateView):
                 orderitems.save()
             self.request.user.basket.all().delete()
 
-
-        # # удаляем пустой заказ
-        # if self.object.get_total_cost() == 0:
-        #     self.object.delete()
-
         return super().form_valid(form)
 
 
@@ -100,7 +93,6 @@ class OrderItemsUpdate(UpdateView):
                 orderitems.instance = self.object
                 orderitems.save()
 
-        # удаляем пустой заказ
         if self.object.get_total_cost() == 0:
             self.object.delete()
 
@@ -145,3 +137,11 @@ def product_quantity_update_delete(sender, instance, **kwargs):
     instance.product.quantity += instance.quantity
     instance.product.save()
 
+
+def get_product_price(request, pk):
+    if request.is_ajax():
+        product = Product.objects.filter(pk=int(pk)).first()
+        if product:
+            return JsonResponse({'price': product.price})
+        else:
+            return JsonResponse({'price': 0})

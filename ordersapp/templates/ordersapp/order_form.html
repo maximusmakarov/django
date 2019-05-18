@@ -6,7 +6,6 @@
     <div class="order_form">
         <form method="post">
             {% csrf_token %}
-            {#            {{ form.as_p }}#}
             <table class="table">
                 {{ orderitems.management_form }}
                 {% for form in orderitems.forms %}
