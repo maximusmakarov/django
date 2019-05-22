@@ -4,7 +4,7 @@ from mainapp.models import ProductCategory
 def basket(request):
     if request.user.is_authenticated:
         return {
-            'basket': request.user.basket.all()
+            'basket': request.user.basket.all().select_related('product__category')
         }
     else:
         return \

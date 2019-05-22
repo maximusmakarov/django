@@ -74,6 +74,7 @@ def product(request, pk):
     context = {
         'title': 'продукт',
         'object': get_object_or_404(Product, pk=pk),
+        # 'object': Product.objects.filter(pk=pk).select_related().first()
     }
 
     return render(request, 'mainapp/product.html', context)

@@ -18,8 +18,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import re_path, include
 
-# if settings.DEBUG:
-#     import debug_toolbar
 
 urlpatterns = [
     re_path(r'^', include('mainapp.urls', namespace='main')),
@@ -29,10 +27,15 @@ urlpatterns = [
     re_path(r'^admin/', admin.site.urls, name='admin'),
     re_path(r'^myadmin/', include('adminapp.urls', namespace='myadmin')),
     re_path(r'^orders/', include('ordersapp.urls', namespace='bookings')),
-    # re_path(r'^__debug__/', include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [re_path(r'^__debug__/', include(debug_toolbar.urls))]
+
 
 

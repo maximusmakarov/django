@@ -41,8 +41,8 @@ class Basket(models.Model):
     @property
     def total_number(self):
         """"return total quantity for user"""
-        quantity = Basket.objects.filter(user=self.user)
-        quantity = quantity.aggregate(models.Sum('quantity')).get('quantity__sum', 0)
+        basket_items = Basket.objects.filter(user=self.user)
+        quantity = basket_items.aggregate(models.Sum('quantity')).get('quantity__sum', 0)
         return quantity
 
     @property
