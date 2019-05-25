@@ -45,29 +45,28 @@ class Order(models.Model):
         return self.orderitems.count()
 
     def get_total_cost(self):
-        items = self.orderitems.select_related('product')
+        # items = self.orderitems.select_related('product')
+        items = self.orderitems.all()
         return sum([x.quantity * x.product.price for x in items])
 
     def delete(self):
-        for item in self.orderitems.select_related():
+        for item in self.orderitems.all():
             item.product.quantity += item.quantity
             item.product.save()
 
         self.is_active = False
         self.save()
 
-
-# class OrderItemQuerySet(models.QuerySet):
-#
-#     def delete(self, *args, **kwargs):
-#         for object in self:
-#             object.product.quantity += object.quantity
-#             object.product.save()
-#         super().delete(*args, **kwargs)
+    def get_summary(self):
+        items = self.orderitems.select_related()
+        return {
+            'total_cost': sum(map(lambda x: x.quantity * x.product.price, items)),
+            'total_quantity': sum(map(lambda x: x.quantity, items))
+        }
 
 
 class OrderItem(models.Model):
-    # objects = OrderItemQuerySet.as_manager()
+
     order = models.ForeignKey(Order, related_name="orderitems", on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='продукт', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name='количество', default=0)

@@ -41,7 +41,7 @@ class OrderItemsCreate(CreateView):
 
             formset = OrderFormSet(self.request.POST, self.request.FILES)
         else:
-            basket_items = self.request.user.basket.all()
+            basket_items = self.request.user.basket.select_related()
             if len(basket_items):
                 OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=len(basket_items))
                 formset = OrderFormSet()
