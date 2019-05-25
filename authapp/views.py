@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -39,6 +40,7 @@ def login(request):
     return render(request, 'authapp/login.html', context)
 
 
+@login_required
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('main:index'))
@@ -67,6 +69,7 @@ def register(request):
     return render(request, 'authapp/register.html', context)
 
 
+@login_required
 @transaction.atomic
 def update(request):
     if request.method == 'POST':
@@ -88,6 +91,7 @@ def update(request):
     }
 
     return render(request, 'authapp/update.html', context)
+
 
 
 def send_verify_mail(user):
