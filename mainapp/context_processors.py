@@ -13,8 +13,8 @@ def basket(request):
             }
 
 
-def menu(request):
-    if request:
-        return {
-            'menu': ProductCategory.objects.filter(is_active=True)
-        }
+# def menu(request):
+#     if request:
+#         return {
+#             'menu': ProductCategory.objects.filter(is_active=True)
+#         }
