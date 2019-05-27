@@ -4,7 +4,9 @@ import random
 from django.conf import settings
 from django.core.cache import cache
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
+from django.template.loader import render_to_string
 
 from mainapp.models import ProductCategory, Product
 
@@ -113,7 +115,15 @@ def category(request, pk, page=1):
             'links_menu': get_menu(),
         }
 
-        return render(request, 'mainapp/products_list.html', context)
+        if request.is_ajax():
+            print('ajax works')
+            result = render_to_string('mainapp/includes/inc__products_list_content.html',
+                                      context=context,
+                                      request=request)
+
+            return JsonResponse({'result': result})
+        else:
+            return render(request, 'mainapp/products_list.html', context)
 
 
 def products(request):
@@ -170,3 +180,40 @@ def contact(request):
         'locations': locations,
     }
     return render(request, 'mainapp/contact.html', context)
+
+
+# def products_ajax(request, pk=None, page=1):
+#     if request.is_ajax():
+#         links_menu = get_menu()
+#
+#         if pk:
+#             if pk == '0':
+#                 _category = {
+#                     'pk': 0,
+#                     'name': 'все'
+#                 }
+#                 _products = get_products()
+#             else:
+#                 _category = get_category(pk)
+#                 _products = get_products_in_category(pk)
+#
+#             paginator = Paginator(_products, 2)
+#             try:
+#                 products_paginator = paginator.page(page)
+#             except PageNotAnInteger:
+#                 products_paginator = paginator.page(1)
+#             except EmptyPage:
+#                 products_paginator = paginator.page(paginator.num_pages)
+#
+#             context = {
+#                 'links_menu': links_menu,
+#                 'category': _category,
+#                 'products': products_paginator,
+#             }
+#
+#             result = render_to_string(
+#                 'mainapp/includes/inc__products_list_content.html',
+#                 context=context,
+#                 request=request)
+#
+#             return JsonResponse({'result': result})
