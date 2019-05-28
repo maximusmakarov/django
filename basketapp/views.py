@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 @login_required
 def index(request):
-    basket_items = request.user.basket.order_by('product__category')
+    basket_items = Basket.objects.all().select_related('product__category').order_by('product__category')
 
     context = {
         'title': 'корзина',
@@ -60,7 +60,7 @@ def update(request, pk, quantity):
             basket_item.delete()
 
         context = {
-            'basket_items': request.user.basket.all().order_by('product__category'),
+            'basket_items': Basket.objects.all().select_related('product__category').order_by('product__category'),
         }
 
         result = render_to_string('basketapp/includes/inc__basket_list.html', context)

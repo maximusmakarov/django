@@ -117,6 +117,8 @@ class OrderRead(DetailView):
 
     def get_context_data(self, **kwargs):
         # TODO: переписать метод get_context_data
+        # "mainapp_product"."category_id" = "mainapp_productcategory"."id"
+
         context = super().get_context_data(**kwargs)
         context['title'] = 'заказ/просмотр'
         return context

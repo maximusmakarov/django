@@ -9,6 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
 
 from mainapp.models import ProductCategory, Product
+from django.views.decorators.cache import never_cache
 
 
 def get_category(pk):

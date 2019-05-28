@@ -7,14 +7,6 @@ from django.utils.functional import cached_property
 
 from mainapp.models import Product
 
-# class BasketQuerySet(models.QuerySet):
-#
-#     def delete(self, *args, **kwargs):
-#         for object in self:
-#             object.product.quantity += object.quantity
-#             object.product.save()
-#         super().delete(*args, **kwargs)
-
 
 class Basket(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='basket')
@@ -46,15 +38,3 @@ class Basket(models.Model):
         """return total cost for user"""
         _items = self.get_items.values_list('product__price', 'quantity')
         return reduce(lambda x, b: x + mul(*b), _items, 0)
-
-    # @property
-    # def product_cost(self):
-    #     return self.product.price * self.quantity
-    #
-    # @property
-    # def total_number(self):
-    #     return sum(list(map(lambda x: x.quantity, self.get_items)))
-    #
-    # @property
-    # def total_amount(self):
-    #     return sum(list(map(lambda x: x.product_cost, self.get_items)))

@@ -46,7 +46,7 @@ class Order(models.Model):
 
     def get_total_cost(self):
         # items = self.orderitems.select_related('product')
-        items = self.orderitems.all()
+        items = self.orderitems.all().select_related()
         return sum([x.quantity * x.product.price for x in items])
 
     def delete(self):
